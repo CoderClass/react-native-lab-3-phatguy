@@ -14,6 +14,28 @@ export default class App extends Component {
     latitude: 37.785834,
     latitudeDelta: 0.1,
     longitudeDelta: 0.1,
+    markers: []
+  }
+
+  _onLongPressed(coor) {
+    let markers = this.state.markers
+    markers += coor
+  }
+
+  renderMarkers() {
+    let markers = this.state.markers
+    let markerRender = []
+    markers.forEach(function(element) {
+        markerRender.push(
+          <MapView.Marker
+             coordinate={element}
+             title={'Long press marker'}
+          />
+        )
+    })
+    return (
+      {markerRender}
+    )
   }
 
   render() {
@@ -24,19 +46,6 @@ export default class App extends Component {
         latitude,
         longitude
       })
-      /*{
-            coords:
-            {
-                speed: -1,
-                longitude: -122.406417,
-                latitude: 37.785834,
-                accuracy: 5,
-                heading: -1,
-                altitude: 0,
-                altitudeAccuracy: -1
-            },
-            timestamp: 1490794016532.687
-      }*/
     }, (error) => {
       console.log('error', error);
     });
@@ -47,11 +56,16 @@ export default class App extends Component {
         style={{
           flex: 1,
         }}
+        onLongPress={(e) => {
+           const { coordinate } = e.nativeEvent;
+           this._onLongPressed(coordinate)
+        }}
       >
       <MapView.Marker
          coordinate={this.state}
          title={'Current position'}
        />
+      {this.renderMarkers()}
       </MapView>
     )
   }
