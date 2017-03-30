@@ -1,0 +1,3 @@
+rootProject.name = 'phatguy'
+
+include ':app'
