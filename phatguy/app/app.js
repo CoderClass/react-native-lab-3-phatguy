@@ -49,7 +49,6 @@ export default class App extends Component {
 
     ImagePicker.showImagePicker(options, (response) => {
       console.log('Response = ', response);
-      debugger
       if (response.didCancel) {
         console.log('User cancelled image picker');
       }
@@ -61,44 +60,13 @@ export default class App extends Component {
       }
       else {
         let source = { uri: response.uri };
-
-        // You can also display the image using data:
-        // let source = { uri: 'data:image/jpeg;base64,' + response.data };
         coor.source = source
-        console.log('adding coor', coor)
-        debugger
         this.setState({
-          markers: [
-            ...this.state.markers,
-            coor,
-          ]
+          markers: [...this.state.markers, coor]
         })
-
-        // this.setState({
-        //   avatarSource: source
-        // });
         }
     });
   }
-
-    pickImage = (coord) => {
-      ImagePicker.showImagePicker({
-          storageOptions: {
-              skipBackup: true,    path: 'images'  }
-      }, (response) => {
-          if (response.didCancel) {
-              console.log('User cancelled image picker');  }
-          else if (response.error) {
-              console.log('ImagePicker Error: ', response.error);  }
-          else if (response.customButton) {
-              console.log('User tapped custom button: ', response.customButton);  }
-          else {
-          let source = { uri: response.uri };    // You can also display the image using data:    // let source = { uri: 'data:image/jpeg;base64,' + response.data };    **this**.setState({
-              // image: source
-              debugger
-          }
-      })
-    }
 
   renderMarkers() {
     let markers = this.state.markers
@@ -127,7 +95,6 @@ export default class App extends Component {
                 fontSize: 12,
                 }}
               >
-                Marker {this.state.markers.length}
               </Text>
             </MapView.Callout>
           </MapView.Marker>
@@ -135,7 +102,6 @@ export default class App extends Component {
     })
     return markerRender
   }
-
 
   render() {
     return (
@@ -146,10 +112,10 @@ export default class App extends Component {
         }}
         onPress={(e) => {
            const { coordinate } = e.nativeEvent;
-
-           this.pickImage(coordinate);
+           this._onLongPressed(coordinate);
         }}
       >
+
       <MapView.Marker
          coordinate={this.state}
          title={'Current position'}
@@ -159,7 +125,3 @@ export default class App extends Component {
     )
   }
 }
-
-const styles = StyleSheet.create({
-});
-// this._onLongPressed(coordinate)
