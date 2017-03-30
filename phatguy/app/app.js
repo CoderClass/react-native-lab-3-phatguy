@@ -17,28 +17,8 @@ export default class App extends Component {
     markers: []
   }
 
-  _onLongPressed(coor) {
-    let markers = this.state.markers
-    markers += coor
-  }
-
-  renderMarkers() {
-    let markers = this.state.markers
-    let markerRender = []
-    markers.forEach(function(element) {
-        markerRender.push(
-          <MapView.Marker
-             coordinate={element}
-             title={'Long press marker'}
-          />
-        )
-    })
-    return markerRender
-  }
-
-  render() {
+  getCurrentPosition() {
     navigator.geolocation.getCurrentPosition((position) => {
-      console.log('position', position)
       const { latitude, longitude } = position.coords
       this.setState({
         latitude,
@@ -47,7 +27,41 @@ export default class App extends Component {
     }, (error) => {
       console.log('error', error);
     });
-    console.log('this.state', this.state)
+  }
+
+  _onLongPressed(coor) {
+    console.log('coor', coor)
+
+    this.setState({
+      markers: [
+        ...this.state.markers,
+        coor
+      ]
+    })
+  }
+
+  renderMarkers() {
+    let markers = this.state.markers
+    let markerRender = []
+
+    markers.forEach(function(element) {
+        markerRender.push(
+          <MapView.Marker
+             key={element.latitude}
+             coordinate={element}
+             title={'Long press marker'}
+          >
+            <MapView.Callout>
+              <Text>Callout</Text>
+            </MapView.Callout>
+          </MapView.Marker>
+        )
+    })
+    return markerRender
+  }
+
+
+  render() {
     return (
       <MapView
         region={this.state}
