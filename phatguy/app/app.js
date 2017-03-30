@@ -33,9 +33,7 @@ export default class App extends Component {
           />
         )
     })
-    return (
-      {markerRender}
-    )
+    return markerRender
   }
 
   render() {
