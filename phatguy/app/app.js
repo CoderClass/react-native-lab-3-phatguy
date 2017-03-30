@@ -9,6 +9,7 @@ import {
 
 import MapView from 'react-native-maps';
 import ImagePicker from 'react-native-image-picker';
+import Lightbox from 'react-native-lightbox'
 
 export default class App extends Component {
   constructor(props) {
@@ -84,12 +85,22 @@ export default class App extends Component {
                 alignItems: 'center', justifyContent: 'center',
               }}
             >
+              <Lightbox
+                renderContent={() => {
+                  return (<Image source={element.source}
+                         style={{
+                           flex: 1,
+                         }}
+                  />);
+                }}
+            >
               <Image source={element.source}
                 style={{
                   width: 60, height: 60,
                   margin: 4,
                 }}
               />
+            </Lightbox>
               <Text
                 style={{
                 fontSize: 12,
@@ -110,7 +121,7 @@ export default class App extends Component {
         style={{
           flex: 1,
         }}
-        onPress={(e) => {
+        onLongPressed={(e) => {
            const { coordinate } = e.nativeEvent;
            this._onLongPressed(coordinate);
         }}
