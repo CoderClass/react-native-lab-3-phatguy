@@ -6,10 +6,24 @@ import {
   View
 } from 'react-native';
 
+import MapView from 'react-native-maps';
+
 export default class App extends Component {
+  state = {
+    longitude: -122.406417,
+    latitude: 37.785834,
+    latitudeDelta: 0.1,
+    longitudeDelta: 0.1,
+  }
+
   render() {
     navigator.geolocation.getCurrentPosition((position) => {
       console.log('position', position)
+      const { latitude, longitude } = position.coords
+      this.setState({
+        latitude,
+        longitude
+      })
       /*{
             coords:
             {
@@ -26,16 +40,22 @@ export default class App extends Component {
     }, (error) => {
       console.log('error', error);
     });
+    console.log('this.state', this.state)
     return (
-      <View>
-        <Text>
-          App
-        </Text>
-      </View>
+      <MapView
+        region={this.state}
+        style={{
+          flex: 1,
+        }}
+      >
+      <MapView.Marker
+         coordinate={this.state}
+         title={'Current position'}
+       />
+      </MapView>
     )
   }
 }
 
 const styles = StyleSheet.create({
 });
-
